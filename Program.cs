@@ -8,7 +8,7 @@ class Program
     static string[] menuOptions = [
         "Conta Letras",
         "Zenit Polar",
-        "Letreiro",
+        //"Desliza Letras",
         "Sair"
     ];
     static void Main()
@@ -25,7 +25,7 @@ class Program
             Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+6);
             Console.Write("Escolha uma opção: ");
             optStr = Console.ReadLine();
-            option = Int32.Parse(optStr);
+            option = Int32.Parse(optStr ?? "1");
             switch (option)
             {
                 case 1: 
@@ -40,7 +40,7 @@ class Program
                     writeCenter("Escreva algo:\n",-1);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
-                    result = contaLetras(input);
+                    result = contaLetras(input ?? "ERRO: Referência a null.");
                     clearWindow(55,10);
                     writeCenter("CONTA LETRAS: RESULTADO",-4);
                     writeCenter("Foram identificados:",-3);
@@ -65,37 +65,39 @@ class Program
                     writeCenter("Escreva algo:\n",-1);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
-                    result = zenitpolar(input);
+                    result = zenitpolar(input ?? "ERRO: Referência a null.");
                     clearWindow(55,10);
                     writeCenter("ZENIT POLAR: RESULTADO",-4);
                     writeCenter("Sua nova frase é:",-3);
                     writeCenter(result,-2);
                     writeCenter("Frase original: ",-1);
-                    writeCenter(input,0);
+                    writeCenter(input ?? "ERRO: Referência a null.",0);
                     writeCenter("Deseja continuar? [S/n] ",1);
                     retry = Console.ReadLine();
                     break;
                 }
-                case 3: 
+                /*case 3: 
                 {
                     string? input;
                     Console.Clear();
                     drawBG();
                     drawWindow(55,10,'s');
-                    writeCenter("LETREIRO", -4);
-                    writeCenter("Esse programa funciona de forma parecida com",-3);
-                    writeCenter("aqueles letreiros led encontrados",-2);
-                    writeCenter("em lojas de informática.",-1);
+                    writeCenter("DESLIZA LETRAS", -4);
+                    writeCenter("Esse programa realiza um efeito no texto",-3);
+                    writeCenter("onde as letras vem de um lado da janela",-2);
+                    writeCenter("até a palavra para completa-lá",-1);
                     writeCenter("Escreva algo:\n",0);
-                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
                     input = Console.ReadLine();
                     Console.Clear();
                     drawBG();
-                    drawWindow(55,5,'s');
-                    letreiro(input,55);
+                    drawWindow(55,3,'s');
+                    deslizaLetras(input ?? "ERRO: Referência a null.",55);
+                    writeCenter("Deseja continuar? [S/n] ",0);
+                    retry = Console.ReadLine();
                     break;
-                }
-                case 4:
+                }*/
+                case 3:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -112,7 +114,15 @@ class Program
                     Environment.Exit(1);
                     break;
             }
-        } while((retry.ToUpper() == "SIM" || retry.ToUpper() == "S" || retry.ToUpper() == "") && (retry.ToUpper() != "NÃO" || retry.ToUpper() != "N"));
+        } while(
+            (string.Equals(retry, "SIM", StringComparison.CurrentCultureIgnoreCase) || 
+            string.Equals(retry, "S", StringComparison.CurrentCultureIgnoreCase) || 
+            string.Equals(retry, "", StringComparison.CurrentCultureIgnoreCase)) 
+            && 
+            (!string.Equals(retry, "NÃO", StringComparison.CurrentCultureIgnoreCase) || 
+            !string.Equals(retry, "NAO", StringComparison.CurrentCultureIgnoreCase) || 
+            !string.Equals(retry, "N", StringComparison.CurrentCultureIgnoreCase))
+        );
         Console.ResetColor();
         Console.Clear();
     }
@@ -244,21 +254,35 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
-    static void letreiro(string str, int areaWidth, int delay=100)
-    {   
-        string text_pad = str + new string(' ',areaWidth);
-        string enter;
-        do 
+    /*static void letreiro(string str, int areaWidth, int delay=100)
+    {
+        while (true)
         {
-            for (int i=0; i<text_pad.Length;i++)
+            Console.Clear();
+
+            writeCenter("Aperte ENTER para voltar ao menu.", Console.WindowHeight/2);
+
+            if (Console.KeyAvailable)
             {
-                clearWindow(areaWidth,3);
-                Console.Write(text_pad.Substring(i, areaWidth));
-                Thread.Sleep(delay);
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    break;
+                }
             }
-            enter = Console.ReadLine();
-        } while(enter.Length>0);
+        }
     }
+
+    static void deslizaLetras(string str, int areaWidth)
+    {
+        string str_pad = new string(' ', areaWidth) + str;
+        for (int i = 0; i < str_pad.Length; i++)
+        {
+            str_pad = str_pad.Remove(i);
+            Console.Write(str_pad);
+            Thread.Sleep(1000);
+        }
+    }*/
 
     static string zenitpolar(string str)
     {

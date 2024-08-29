@@ -8,31 +8,24 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\LabInfo\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "/Users/Dante/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LabInfo\\Downloads\\Claudio\\Claudio.csproj",
+      "projectUniqueName": "/Users/Dante/Documents/ClaudioSharp/Claudio.csproj",
       "projectName": "Claudio",
-      "projectPath": "C:\\Users\\LabInfo\\Downloads\\Claudio\\Claudio.csproj",
-      "packagesPath": "C:\\Users\\LabInfo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LabInfo\\Downloads\\Claudio\\obj\\",
+      "projectPath": "/Users/Dante/Documents/ClaudioSharp/Claudio.csproj",
+      "packagesPath": "/Users/Dante/.nuget/packages/",
+      "outputPath": "/Users/Dante/Documents/ClaudioSharp/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\LabInfo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "/Users/Dante/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -71,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\LabInfo\\scoop\\apps\\dotnet-sdk-lts\\current\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
