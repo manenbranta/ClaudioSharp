@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Claudio")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7b277aaef95c148eaa7c42ce99f95c5dfc31cebe")]
 [assembly: System.Reflection.AssemblyProductAttribute("Claudio")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Claudio")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

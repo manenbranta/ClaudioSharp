@@ -1,6 +1,7 @@
 ﻿namespace Claudio;
 
 using System;
+using System.Threading;
 
 class Program
 {
@@ -90,7 +91,8 @@ class Program
                     input = Console.ReadLine();
                     Console.Clear();
                     drawBG();
-                    drawWindow(55,3,'s');
+                    drawWindow(55,5,'s');
+                    letreiro(input,55);
                     break;
                 }
                 case 4:
@@ -242,18 +244,26 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
-    /*static void letreiro(string str, int areaWidth)
-    {
-        while (true)
+    static void letreiro(string str, int areaWidth, int delay=100)
+    {   
+        string text_pad = str + new string(' ',areaWidth);
+        string enter;
+        do 
         {
-
-        }
-    }*/
+            for (int i=0; i<text_pad.Length;i++)
+            {
+                clearWindow(areaWidth,3);
+                Console.Write(text_pad.Substring(i, areaWidth));
+                Thread.Sleep(delay);
+            }
+            enter = Console.ReadLine();
+        } while(enter.Length>0);
+    }
 
     static string zenitpolar(string str)
     {
-        char[] zenit = { 'Z', 'E', 'N', 'I', 'T', 'z', 'e', 'n', 'i', 't', 'ê', 'é', 'î', 'í' };
-        char[] polar = { 'P', 'O', 'L', 'A', 'R', 'p', 'o', 'l', 'a', 'r', 'õ', 'ó', 'ã', 'á' };
+        char[] zenit = {'Z', 'E', 'N', 'I', 'T', 'z', 'e', 'n', 'i', 't', 'ê', 'é', 'î', 'í'};
+        char[] polar = {'P', 'O', 'L', 'A', 'R', 'p', 'o', 'l', 'a', 'r', 'õ', 'ó', 'ã', 'á'};
 
         var map = new Dictionary<char, char>();
 

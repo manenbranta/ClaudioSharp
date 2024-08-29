@@ -68,3 +68,4 @@ C:\Users\LabInfo\Downloads\Claudio\obj\Debug\net8.0\refint\Claudio.dll
 C:\Users\LabInfo\Downloads\Claudio\obj\Debug\net8.0\Claudio.pdb
 C:\Users\LabInfo\Downloads\Claudio\obj\Debug\net8.0\Claudio.genruntimeconfig.cache
 C:\Users\LabInfo\Downloads\Claudio\obj\Debug\net8.0\ref\Claudio.dll
+C:\Users\LabInfo\Downloads\Claudio\obj\Debug\net8.0\Claudio.sourcelink.json
