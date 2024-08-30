@@ -1,31 +1,31 @@
 ﻿namespace Claudio;
 
 using System;
-using System.Threading;
 
 class Program
 {
-    static string[] menuOptions = [
-        "Conta Letras",
-        "Zenit Polar",
-        //"Desliza Letras",
-        "Sair"
-    ];
     static void Main()
     {
-        string? optStr = "";
+        string? optStr;
         int option; 
-        string? retry = " ";
+        string? retry = "";
+
+        string[] menuOptions = [
+            "Conta Letras",
+            "Zenit Polar",
+            "Letreiro",
+            "Sair"
+        ];
 
         do 
         {
-            drawBG();
-            drawWindow(35,10,'d');
-            menu(menuOptions);
+            Window.drawBG();
+            Window.drawWindow(35,10,'d',ConsoleColor.Red);
+            Window.menu(menuOptions);
             Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+6);
             Console.Write("Escolha uma opção: ");
             optStr = Console.ReadLine();
-            option = Int32.Parse(optStr ?? "1");
+            option = int.Parse(optStr ?? "1");
             switch (option)
             {
                 case 1: 
@@ -33,24 +33,24 @@ class Program
                     string? input;
                     int[] result;
                     Console.Clear();
-                    drawBG();
-                    drawWindow(55,10,'s');
-                    writeCenter("CONTA LETRAS", -4);
-                    writeCenter("Esse programa conta quantas letras uma frase ou",-3);
-                    writeCenter("palavra tem, assim como quantas vogais e consoantes.",-2);
-                    writeCenter("Escreva algo:\n",-1);
+                    Window.drawBG();
+                    Window.drawWindow(55,10,'s');
+                    Window.writeCenter("CONTA LETRAS", -4);
+                    Window.writeCenter("Esse programa conta quantas letras uma frase ou",-3);
+                    Window.writeCenter("palavra tem, assim como quantas vogais e consoantes.",-2);
+                    Window.writeCenter("Escreva algo:\n",-1);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = contaLetras(input ?? "ERRO: Referência a null.");
-                    clearWindow(55,10);
-                    writeCenter("CONTA LETRAS: RESULTADO",-4);
-                    writeCenter("Foram identificados:",-3);
-                    writeCenter(result[0] + " vogais",-2);
-                    writeCenter(result[1] + " consoantes",-1);
-                    writeCenter(result[2] + " letras, no total",0);
-                    writeCenter(result[3] + " números",1);
-                    writeCenter("Frase: " + input,2);
-                    writeCenter("Deseja continuar? [S/n] ",3);
+                    Window.clearWindow(55,10);
+                    Window.writeCenter("CONTA LETRAS: RESULTADO",-4);
+                    Window.writeCenter("Foram identificados:",-3);
+                    Window.writeCenter(result[0] + " vogais",-2);
+                    Window.writeCenter(result[1] + " consoantes",-1);
+                    Window.writeCenter(result[2] + " letras, no total",0);
+                    Window.writeCenter(result[3] + " números",1);
+                    Window.writeCenter("Frase: " + input,2);
+                    Window.writeCenter("Deseja continuar? [S/n] ",3);
                     retry = Console.ReadLine();
                     break;
                 }
@@ -58,23 +58,22 @@ class Program
                 {
                     string? input,result;
                     Console.Clear();
-                    drawBG();
-                    drawWindow(55,10,'s');
-                    writeCenter("ZENIT POLAR", -4);
-                    writeCenter("Esse programa faz uma encriptação básica em qualquer",-3);
-                    writeCenter("frase ou palavra que você digite.",-2);
-                    writeCenter("Escreva algo:\n",-1);
+                    Window.drawBG();
+                    Window.drawWindow(55,10,'s');
+                    Window.writeCenter("ZENIT POLAR", -4);
+                    Window.writeCenter("Esse programa faz uma encriptação básica em qualquer",-3);
+                    Window.writeCenter("frase ou palavra que você digite.",-2);
+                    Window.writeCenter("Escreva algo:\n",-1);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
-                    corrigirCapitalizacao(input);
-                    /* result = zenitpolar(input ?? "ERRO: Referência a null.");
-                    clearWindow(55,10);
-                    writeCenter("ZENIT POLAR: RESULTADO",-4);
-                    writeCenter("Sua nova frase é:",-3);
-                    writeCenter(result,-2);
-                    writeCenter("Frase original: ",-1);
-                    writeCenter(input ?? "ERRO: Referência a null.",0); */
-                    writeCenter("Deseja continuar? [S/n] ",1);
+                    result = zenitpolar(input ?? "ERRO: Referência a null.");
+                    Window.clearWindow(55,10);
+                    Window.writeCenter("ZENIT POLAR: RESULTADO",-4);
+                    Window.writeCenter("Sua nova frase é:",-3);
+                    Window.writeCenter(result,-2);
+                    Window.writeCenter("Frase original: ",-1);
+                    Window.writeCenter(input ?? "ERRO: Referência a null.",0);
+                    Window.writeCenter("Deseja continuar? [S/n] ",1);
                     retry = Console.ReadLine();
                     break;
                 }
@@ -99,7 +98,7 @@ class Program
                     retry = Console.ReadLine();
                     break;
                 }*/
-                case 3:
+                case 4:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -118,8 +117,7 @@ class Program
             }
         } while(
             (string.Equals(retry, "SIM", StringComparison.CurrentCultureIgnoreCase) || 
-            string.Equals(retry, "S", StringComparison.CurrentCultureIgnoreCase) || 
-            string.Equals(retry, "", StringComparison.CurrentCultureIgnoreCase)) 
+            string.Equals(retry, "S", StringComparison.CurrentCultureIgnoreCase)) 
             && 
             (!string.Equals(retry, "NÃO", StringComparison.CurrentCultureIgnoreCase) || 
             !string.Equals(retry, "NAO", StringComparison.CurrentCultureIgnoreCase) || 
@@ -127,106 +125,6 @@ class Program
         );
         Console.ResetColor();
         Console.Clear();
-    }
-
-    static void drawBG(ConsoleColor color = ConsoleColor.Blue) 
-    {
-        Console.BackgroundColor = color;
-
-        for (int i = 0; i < Console.BufferWidth; i++)
-        {
-            for (int j = 0; j < Console.BufferHeight; j++)
-            {
-                Console.Write(" ");
-            }
-        }
-    }
-
-    static void drawWindow(int width, int height, char borda)
-    {
-        /**
-        *   vl = vertical line
-        *   hl = horizontal line
-        *   trc = top-right corner
-        *   tlc = top-left corner
-        *   brc = bottom-right corner
-        *   blc = bottom-left corner
-        **/
-
-        char vl = ' ', hl = ' ', trc = ' ', tlc = ' ', brc = ' ', blc = ' ';
-        switch (borda)
-        {
-            case 'd':
-                vl = '║';
-                trc = '╗';
-                brc = '╝';
-                tlc = '╔';
-                blc = '╚';
-                hl = '═';
-                break;
-            case 's':
-                vl = '│'; // 179
-                trc = '┐'; //191
-                brc = '┘'; //217
-                tlc = '┌'; //218
-                blc = '└'; // 192
-                hl = '─'; // 196
-                break;
-            default:
-                break;
-        }
-
-        //Top line
-        Console.SetCursorPosition((Console.BufferWidth/2)-(width/2),Console.BufferHeight/2-height/2);
-        for (int x = 0; x < width; x++) 
-        {
-            Console.Write(hl);
-        }
-
-        //Columns
-        for (int y = 0; y < height; y++)
-        {
-            Console.SetCursorPosition(Console.BufferWidth/2-width/2,Console.BufferHeight/2-height/2+y); Console.Write(vl);
-            Console.SetCursorPosition(Console.BufferWidth/2+width/2,Console.BufferHeight/2-height/2+y); Console.Write(vl);
-        }
-
-        //Bottom Line
-        Console.SetCursorPosition(Console.BufferWidth/2-(width/2),Console.BufferHeight/2+height/2);
-        for (int x = 0; x < width; x++) 
-        {
-            Console.Write(hl);
-        }
-
-        //Corners
-        Console.SetCursorPosition(Console.BufferWidth/2-(width/2),Console.BufferHeight/2-height/2);
-        Console.Write(tlc);
-        Console.SetCursorPosition(Console.BufferWidth/2+width/2,Console.BufferHeight/2-height/2);
-        Console.Write(trc);
-        Console.SetCursorPosition(Console.BufferWidth/2-(width/2),Console.BufferHeight/2+height/2);
-        Console.Write(blc);
-        Console.SetCursorPosition(Console.BufferWidth/2+width/2,Console.BufferHeight/2+height/2);
-        Console.Write(brc);
-    }
-
-    static void clearWindow(int windowWidth, int windowHeight)
-    {   
-        for (int le = 1; le<windowHeight; le++) 
-        {
-            Console.SetCursorPosition(Console.BufferWidth/2-windowWidth/2+1,Console.BufferHeight/2-windowHeight/2+le);
-            for (int x = 0; x < windowWidth-2; x++) 
-            {
-                Console.Write(" ");
-            }
-        }
-    }
-
-    static void menu(string[] options)
-    {
-        for (int i=0; i<options.Length; i++)
-        {
-            Console.SetCursorPosition(Console.BufferWidth/2-10,Console.BufferHeight/2-1+i);
-            Console.Write($"[{i+1}] - {options[i]}");
-        }
     }
 
     static int[] contaLetras(string str) 
@@ -256,13 +154,16 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
-    static void letreiro(string str, int areaWidth, int delay=100)
+    static void letreiro(string str, int delay=100)
     {
-        strpad = new string(" ",str.Length*3) + strpad;
-        do
-        {
+        string strpad = new string(' ',str.Length*3) + str;
 
-        } while(Console.KeyPressed == false);
+        do
+        {   
+            Console.SetCursorPosition(Console.BufferWidth/2-strpad.Length,Console.BufferHeight/2);
+            Console.Write(strpad);
+            strpad.Split();
+        } while(Console.KeyAvailable == false);
     }
 
     /* static void deslizaLetras(string str, int areaWidth)
@@ -308,11 +209,5 @@ class Program
         }
 
         return result.ToString();
-    }
-
-    static void writeCenter(string str, int yAdd)
-    {
-        Console.SetCursorPosition(Console.WindowWidth/2-str.Length/2,Console.WindowHeight/2+yAdd);
-        Console.Write(str);
     }
 }
