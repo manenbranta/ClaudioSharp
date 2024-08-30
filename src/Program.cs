@@ -42,7 +42,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = contaLetras(input ?? "ERRO: Referência a null.");
-                    Window.clearWindow(55,10);
+                    Window.clear(55,10);
                     Window.writeCenter("CONTA LETRAS: RESULTADO",-4);
                     Window.writeCenter("Foram identificados:",-3);
                     Window.writeCenter(result[0] + " vogais",-2);
@@ -67,7 +67,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = zenitpolar(input ?? "ERRO: Referência a null.");
-                    Window.clearWindow(55,10);
+                    Window.clear(55,10);
                     Window.writeCenter("ZENIT POLAR: RESULTADO",-4);
                     Window.writeCenter("Sua nova frase é:",-3);
                     Window.writeCenter(result,-2);
@@ -77,27 +77,27 @@ class Program
                     retry = Console.ReadLine();
                     break;
                 }
-                /*case 3: 
+                case 3: 
                 {
                     string? input;
                     Console.Clear();
-                    drawBG();
-                    drawWindow(55,10,'s');
-                    writeCenter("DESLIZA LETRAS", -4);
-                    writeCenter("Esse programa realiza um efeito no texto",-3);
-                    writeCenter("onde as letras vem de um lado da janela",-2);
-                    writeCenter("até a palavra para completa-lá",-1);
-                    writeCenter("Escreva algo:\n",0);
+                    Window.drawBG();
+                    Window.drawWindow(55,10,'s');
+                    Window.writeCenter("DESLIZA LETRAS", -4);
+                    Window.writeCenter("Esse programa realiza um efeito no texto",-3);
+                    Window.writeCenter("onde as letras vem de um lado da janela",-2);
+                    Window.writeCenter("até a palavra para completa-lá",-1);
+                    Window.writeCenter("Escreva algo:\n",0);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
                     input = Console.ReadLine();
                     Console.Clear();
-                    drawBG();
-                    drawWindow(55,3,'s');
-                    deslizaLetras(input ?? "ERRO: Referência a null.",55);
-                    writeCenter("Deseja continuar? [S/n] ",0);
+                    Window.drawBG();
+                    Window.drawWindow(55,3,'s');
+                    slidingText(input ?? "ERRO: Referência a null.",100,55,3);
+                    Window.writeCenter("Deseja continuar? [S/n] ",2);
                     retry = Console.ReadLine();
                     break;
-                }*/
+                }
                 case 4:
                     Console.ResetColor();
                     Console.Clear();
@@ -166,16 +166,37 @@ class Program
         } while(Console.KeyAvailable == false);
     }
 
-    /* static void deslizaLetras(string str, int areaWidth)
+    static void deslizaLetras(string str, int areaWidth)
     {
-        string str_pad = new string(' ', areaWidth) + str;
-        for (int i = 0; i < str_pad.Length; i++)
+        string strpad = new string(' ', areaWidth) + str;
+        for (int i = 0; i < strpad.Length; i++)
         {
-            str_pad = str_pad.Remove(i);
-            Console.Write(str_pad);
+            strpad = strpad.Remove(i);
+            Console.Write(strpad);
             Thread.Sleep(1000);
         }
-    } */
+    }
+
+    static void slidingText(string text, int offset, int width, int height)
+    {
+        Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2-3);
+        for (int i = -text.Length; i < width; i++)
+        {
+            Window.clear(width,height);
+            
+            // Print leading spaces before the text
+            int startPosition = Math.Max(0, -i);
+            int endPosition = Math.Min(text.Length, width - i);
+            Console.Write(new string(' ', Math.Max(0, width - i)));
+
+            for (int j = startPosition; j < endPosition; j++)
+            {
+                Console.Write(text[j]);
+            }
+
+            Thread.Sleep(offset);  // Adjust delay to control the speed of the slide
+        }
+    }
 
     static string zenitpolar(string str)
     {

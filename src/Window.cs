@@ -9,7 +9,7 @@ class Window
         Write(str);
     }
 
-    public static void clearWindow(int windowWidth, int windowHeight)
+    public static void clear(int windowWidth, int windowHeight)
     {   
         for (int le = 1; le<windowHeight; le++) 
         {
