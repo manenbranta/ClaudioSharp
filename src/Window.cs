@@ -43,7 +43,7 @@ class Window
         }
     }
 
-    public static void drawWindow(int width, int height, char borda, ConsoleColor fg = ConsoleColor.White)
+    public static void draw(int width, int height, char borda, ConsoleColor fg = ConsoleColor.White)
     {
         /**
         *   vl = vertical line

@@ -20,7 +20,7 @@ class Program
         do 
         {
             Window.drawBG();
-            Window.drawWindow(35,10,'d',ConsoleColor.Red);
+            Window.draw(35,10,'d',ConsoleColor.Red);
             Window.menu(menuOptions);
             Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+6);
             Console.Write("Escolha uma opção: ");
@@ -34,7 +34,7 @@ class Program
                     int[] result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.drawWindow(55,10,'s');
+                    Window.draw(55,10,'s');
                     Window.writeCenter("CONTA LETRAS", -4);
                     Window.writeCenter("Esse programa conta quantas letras uma frase ou",-3);
                     Window.writeCenter("palavra tem, assim como quantas vogais e consoantes.",-2);
@@ -59,7 +59,7 @@ class Program
                     string? input,result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.drawWindow(55,10,'s');
+                    Window.draw(55,10,'s');
                     Window.writeCenter("ZENIT POLAR", -4);
                     Window.writeCenter("Esse programa faz uma encriptação básica em qualquer",-3);
                     Window.writeCenter("frase ou palavra que você digite.",-2);
@@ -82,7 +82,7 @@ class Program
                     string? input;
                     Console.Clear();
                     Window.drawBG();
-                    Window.drawWindow(55,10,'s');
+                    Window.draw(55,10,'s');
                     Window.writeCenter("DESLIZA LETRAS", -4);
                     Window.writeCenter("Esse programa realiza um efeito no texto",-3);
                     Window.writeCenter("onde as letras vem de um lado da janela",-2);
@@ -92,8 +92,8 @@ class Program
                     input = Console.ReadLine();
                     Console.Clear();
                     Window.drawBG();
-                    Window.drawWindow(55,3,'s');
-                    slidingText(input ?? "ERRO: Referência a null.",100,55,3);
+                    //Window.draw(55,3,'s');
+                    letreiro(input ?? "ERRO: Referência a null.",100);
                     Window.writeCenter("Deseja continuar? [S/n] ",2);
                     retry = Console.ReadLine();
                     break;
@@ -156,17 +156,23 @@ class Program
 
     static void letreiro(string str, int delay=100)
     {
-        string strpad = new string(' ',str.Length*3) + str;
+        string textpad = str + new string(' ',str.Length*3);
+        int width = str.Length + str.Length*3;
 
-        do
-        {   
-            Console.SetCursorPosition(Console.BufferWidth/2-strpad.Length,Console.BufferHeight/2);
-            Console.Write(strpad);
-            strpad.Split();
+        Window.draw(width,3,'s',ConsoleColor.Green);
+        do 
+        {
+            Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
+            for (int i=0; i < textpad.Length; i++)
+            {
+                Window.clear(str.Length+str.Length*3,3);
+                Console.Write(textpad.Substring(i, textpad.Length-i));
+                Thread.Sleep(delay);
+            }
         } while(Console.KeyAvailable == false);
     }
 
-    static void deslizaLetras(string str, int areaWidth)
+/*     static void deslizaLetras(string str, int areaWidth)
     {
         string strpad = new string(' ', areaWidth) + str;
         for (int i = 0; i < strpad.Length; i++)
@@ -175,7 +181,7 @@ class Program
             Console.Write(strpad);
             Thread.Sleep(1000);
         }
-    }
+    } */
 
     static void slidingText(string text, int offset, int width, int height)
     {
