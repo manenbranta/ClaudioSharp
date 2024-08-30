@@ -256,26 +256,16 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
-    /*static void letreiro(string str, int areaWidth, int delay=100)
+    static void letreiro(string str, int areaWidth, int delay=100)
     {
-        while (true)
+        strpad = new string(" ",str.Length*3) + strpad;
+        do
         {
-            Console.Clear();
 
-            writeCenter("Aperte ENTER para voltar ao menu.", Console.WindowHeight/2);
-
-            if (Console.KeyAvailable)
-            {
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Enter)
-                {
-                    break;
-                }
-            }
-        }
+        } while(Console.KeyPressed == false);
     }
 
-    static void deslizaLetras(string str, int areaWidth)
+    /* static void deslizaLetras(string str, int areaWidth)
     {
         string str_pad = new string(' ', areaWidth) + str;
         for (int i = 0; i < str_pad.Length; i++)
