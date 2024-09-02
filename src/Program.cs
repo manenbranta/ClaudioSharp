@@ -83,10 +83,10 @@ class Program
                     Console.Clear();
                     Window.drawBG();
                     Window.draw(55,10,'s');
-                    Window.writeCenter("DESLIZA LETRAS", -4);
+                    Window.writeCenter("LETREIRO", -4);
                     Window.writeCenter("Esse programa realiza um efeito no texto",-3);
-                    Window.writeCenter("onde as letras vem de um lado da janela",-2);
-                    Window.writeCenter("até a palavra para completa-lá",-1);
+                    Window.writeCenter("parecido com aqueles paineis led de lojas",-2);
+                    Window.writeCenter("de informática",-1);
                     Window.writeCenter("Escreva algo:\n",0);
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
                     input = Console.ReadLine();
@@ -156,23 +156,23 @@ class Program
 
     static void letreiro(string str, int delay=100)
     {
-        string textpad = str + new string(' ',str.Length*3);
+        string textpad = new string(' ',str.Length*3) + str;
         int width = str.Length + str.Length*3;
 
-        Window.draw(width,3,'s',ConsoleColor.Green);
+        Window.draw(width,5,'s',ConsoleColor.Yellow);
         do 
         {
-            Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
             for (int i=0; i < textpad.Length; i++)
             {
                 Window.clear(str.Length+str.Length*3,3);
+                Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
                 Console.Write(textpad.Substring(i, textpad.Length-i));
                 Thread.Sleep(delay);
             }
         } while(Console.KeyAvailable == false);
     }
 
-/*     static void deslizaLetras(string str, int areaWidth)
+/*    static void deslizaLetras(string str, int areaWidth)
     {
         string strpad = new string(' ', areaWidth) + str;
         for (int i = 0; i < strpad.Length; i++)
@@ -181,7 +181,7 @@ class Program
             Console.Write(strpad);
             Thread.Sleep(1000);
         }
-    } */
+    }*/
 
     static void slidingText(string text, int offset, int width, int height)
     {
