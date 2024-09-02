@@ -14,13 +14,14 @@ class Program
             "Conta Letras",
             "Zenit Polar",
             "Letreiro",
+            "Desliza Letras",
             "Sair"
         ];
 
         do 
         {
             Window.drawBG();
-            Window.draw(35,10,'d',ConsoleColor.Red);
+            Window.draw(35,10,'d');
             Window.menu(menuOptions);
             Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+6);
             Console.Write("Escolha uma opção: ");
@@ -92,13 +93,31 @@ class Program
                     input = Console.ReadLine();
                     Console.Clear();
                     Window.drawBG();
-                    //Window.draw(55,3,'s');
-                    letreiro(input ?? "ERRO: Referência a null.",100);
-                    Window.writeCenter("Deseja continuar? [S/n] ",2);
+                    letreiro(input ?? "ERRO: Referência a null.");
+                    Window.writeCenter("Deseja continuar? [S/n] ",4);
                     retry = Console.ReadLine();
                     break;
                 }
-                case 4:
+                case 4: {
+                    string? input;
+                    Console.Clear();
+                    Window.drawBG();
+                    Window.draw(55,10,'s');
+                    Window.writeCenter("DESLIZA LETRAS", -4);
+                    Window.writeCenter("Esse programa realiza um efeito no texto",-3);
+                    Window.writeCenter("onde as letras vem de um lado da tela",-2);
+                    Window.writeCenter("para completar a palavra no outro.",-1);
+                    Window.writeCenter("Escreva algo:\n",0);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
+                    input = Console.ReadLine();
+                    Console.Clear();
+                    Window.drawBG();
+                    deslizaLetras(input ?? "ERRO: Referência a null.",100);
+                    Window.writeCenter("Deseja continuar? [S/n] ",3);
+                    retry = Console.ReadLine();
+                    break;
+                }
+                case 5:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -116,12 +135,12 @@ class Program
                     break;
             }
         } while(
-            (string.Equals(retry, "SIM", StringComparison.CurrentCultureIgnoreCase) || 
-            string.Equals(retry, "S", StringComparison.CurrentCultureIgnoreCase)) 
+            (string.Equals(retry.Trim(' '), "SIM", StringComparison.CurrentCultureIgnoreCase) || 
+            string.Equals(retry.Trim(' '), "S", StringComparison.CurrentCultureIgnoreCase)) 
             && 
-            (!string.Equals(retry, "NÃO", StringComparison.CurrentCultureIgnoreCase) || 
-            !string.Equals(retry, "NAO", StringComparison.CurrentCultureIgnoreCase) || 
-            !string.Equals(retry, "N", StringComparison.CurrentCultureIgnoreCase))
+            (!string.Equals(retry.Trim(' '), "NÃO", StringComparison.CurrentCultureIgnoreCase) || 
+            !string.Equals(retry.Trim(' '), "NAO", StringComparison.CurrentCultureIgnoreCase) || 
+            !string.Equals(retry.Trim(' '), "N", StringComparison.CurrentCultureIgnoreCase))
         );
         Console.ResetColor();
         Console.Clear();
@@ -154,55 +173,48 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
-    static void letreiro(string str, int delay=100)
+    static void letreiro(string str)
     {
         string textpad = new string(' ',str.Length*3) + str;
         int width = str.Length + str.Length*3;
 
-        Window.draw(width,5,'s',ConsoleColor.Yellow);
+        int delay;
+
+        if (str.Length <= 20){delay = 100;} else{delay = 50;}
+
+        Window.draw(width,5,'s');
         do 
         {
             for (int i=0; i < width; i++)
             {
                 Window.clear(width,3);
                 Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
-                Console.Write(textpad.Substring(0, width));
+                Console.Write(textpad);
                 textpad = textpad.Substring(1) + textpad.Substring(0, 1);
-                Window.draw(width,5,'s',ConsoleColor.Yellow);
+                Window.draw(width,5,'s');
+                Window.writeCenter("Pressione ESPAÇO para continuar.", 3);
                 Thread.Sleep(delay);
             }
         } while(Console.KeyAvailable == false);
     }
 
-/*    static void deslizaLetras(string str, int areaWidth)
+    static void deslizaLetras(string str, int delay=100)
     {
-        string strpad = new string(' ', areaWidth) + str;
-        for (int i = 0; i < strpad.Length; i++)
-        {
-            strpad = strpad.Remove(i);
-            Console.Write(strpad);
-            Thread.Sleep(1000);
-        }
-    }*/
+        string textpad = new string(' ',str.Length*3) + str;
+        int width = str.Length + str.Length*3;
 
-    static void slidingText(string text, int offset, int width, int height)
-    {
-        Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2-3);
-        for (int i = -text.Length; i < width; i++)
+        Window.draw(width,5,'s');
+        for (int i=0; i < width; i++)
         {
-            Window.clear(width,height);
-            
-            // Print leading spaces before the text
-            int startPosition = Math.Max(0, -i);
-            int endPosition = Math.Min(text.Length, width - i);
-            Console.Write(new string(' ', Math.Max(0, width - i)));
-
-            for (int j = startPosition; j < endPosition; j++)
+            for (int j=0; j <= width-str.Length; j++)
             {
-                Console.Write(text[j]);
+                Window.clear(width,5);
+                Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
+                string line = new string(' ', width-str.Length-j);
+                line += textpad.Substring(0, i) + textpad[i] + new string(' ', j);
+                Console.Write(line);
+                Thread.Sleep(delay);
             }
-
-            Thread.Sleep(offset);  // Adjust delay to control the speed of the slide
         }
     }
 

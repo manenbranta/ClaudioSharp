@@ -13,7 +13,7 @@ class Window
     {   
         for (int le = 1; le<windowHeight; le++) 
         {
-            SetCursorPosition(BufferWidth/2-windowWidth/2+1,BufferHeight/2-windowHeight/2+le);
+            SetCursorPosition(WindowWidth/2-windowWidth/2+1,WindowHeight/2-windowHeight/2+le);
             for (int x = 0; x < windowWidth-2; x++) 
             {
                 Write(" ");
@@ -25,7 +25,7 @@ class Window
     {
         for (int i=0; i<options.Length; i++)
         {
-            SetCursorPosition(BufferWidth/2-10,BufferHeight/2-1+i);
+            SetCursorPosition(WindowWidth/2-10,WindowHeight/2-options.Length/2+i);
             Write($"[{i+1}] - {options[i]}");
         }
     }
@@ -34,9 +34,9 @@ class Window
     {
         BackgroundColor = color;
 
-        for (int i = 0; i < BufferWidth; i++)
+        for (int i = 0; i < WindowWidth; i++)
         {
-            for (int j = 0; j < BufferHeight; j++)
+            for (int j = 0; j < WindowHeight; j++)
             {
                 Write(" ");
             }
@@ -78,7 +78,7 @@ class Window
         }
 
         //Top line
-        SetCursorPosition((BufferWidth/2)-(width/2),BufferHeight/2-height/2);
+        SetCursorPosition((WindowWidth/2)-(width/2),WindowHeight/2-height/2);
         for (int x = 0; x < width; x++) 
         {
             ForegroundColor = fg;
@@ -90,15 +90,15 @@ class Window
         for (int y = 0; y < height; y++)
         {
             ForegroundColor = fg;
-            SetCursorPosition(BufferWidth/2-width/2,BufferHeight/2-height/2+y); Write(vl);
+            SetCursorPosition(WindowWidth/2-width/2,WindowHeight/2-height/2+y); Write(vl);
             ForegroundColor = ConsoleColor.White;
             ForegroundColor = fg;
-            SetCursorPosition(BufferWidth/2+width/2,BufferHeight/2-height/2+y); Write(vl);
+            SetCursorPosition(WindowWidth/2+width/2,WindowHeight/2-height/2+y); Write(vl);
             ForegroundColor = ConsoleColor.White;
         }
 
         //Bottom Line
-        SetCursorPosition(BufferWidth/2-(width/2),BufferHeight/2+height/2);
+        SetCursorPosition(WindowWidth/2-(width/2),WindowHeight/2+height/2);
         for (int x = 0; x < width; x++) 
         {
             ForegroundColor = fg;
@@ -107,19 +107,19 @@ class Window
         }
 
         //Corners
-        SetCursorPosition(BufferWidth/2-(width/2),BufferHeight/2-height/2);
+        SetCursorPosition(WindowWidth/2-(width/2),WindowHeight/2-height/2);
         ForegroundColor = fg;
         Write(tlc);
         ForegroundColor = ConsoleColor.White;
-        SetCursorPosition(BufferWidth/2+width/2,BufferHeight/2-height/2);
+        SetCursorPosition(WindowWidth/2+width/2,WindowHeight/2-height/2);
         ForegroundColor = fg;
         Write(trc);
         ForegroundColor = ConsoleColor.White;
-        SetCursorPosition(BufferWidth/2-(width/2),BufferHeight/2+height/2);
+        SetCursorPosition(WindowWidth/2-(width/2),WindowHeight/2+height/2);
         ForegroundColor = fg;
         Write(blc);
         ForegroundColor = ConsoleColor.White;
-        SetCursorPosition(BufferWidth/2+width/2,BufferHeight/2+height/2);
+        SetCursorPosition(WindowWidth/2+width/2,WindowHeight/2+height/2);
         ForegroundColor = fg;
         Write(brc);
         ForegroundColor = ConsoleColor.White;
