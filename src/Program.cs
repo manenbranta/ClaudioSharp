@@ -162,11 +162,13 @@ class Program
         Window.draw(width,5,'s',ConsoleColor.Yellow);
         do 
         {
-            for (int i=0; i < textpad.Length; i++)
+            for (int i=0; i < width; i++)
             {
-                Window.clear(str.Length+str.Length*3,3);
+                Window.clear(width,3);
                 Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
-                Console.Write(textpad.Substring(i, textpad.Length-i));
+                Console.Write(textpad.Substring(0, width));
+                textpad = textpad.Substring(1) + textpad.Substring(0, 1);
+                Window.draw(width,5,'s',ConsoleColor.Yellow);
                 Thread.Sleep(delay);
             }
         } while(Console.KeyAvailable == false);
