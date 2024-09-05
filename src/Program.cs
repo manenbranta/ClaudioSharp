@@ -15,6 +15,7 @@ class Program
             "Zenit Polar",
             "Letreiro",
             "Desliza Letras",
+            "Formata Nomes",
             "Sair"
         ];
 
@@ -117,7 +118,31 @@ class Program
                     retry = Console.ReadLine();
                     break;
                 }
-                case 5:
+                case 5: {
+                    string? input;
+                    string result;
+                    Console.Clear();
+                    Window.drawBG();
+                    Window.draw(55,10,'s');
+                    Window.writeCenter("FORMATA NOMES", -4);
+                    Window.writeCenter("Esse programa formata os nomes corretamente,",-3);
+                    Window.writeCenter("deixando as primeiras letras maiúsculas,",-2);
+                    Window.writeCenter("exceto quando há um artigo no nome.",-1);
+                    Window.writeCenter("Escreva um nome:\n",0);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
+                    input = Console.ReadLine();
+                    result = formatarNome(input ?? "ERRO: Referência a null");
+                    Window.clear(55,10);
+                    Window.writeCenter("FORMATA NOMES: RESULTADO",-4);
+                    Window.writeCenter("O nome formatado fica:",-3);
+                    Window.writeCenter(result,-2);
+                    Window.writeCenter("Nome original: ",-1);
+                    Window.writeCenter(input ?? "ERRO: Referência a null.",0);
+                    Window.writeCenter("Deseja continuar? [S/n] ",1);
+                    retry = Console.ReadLine();
+                    break;
+                }
+                case 6:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -173,6 +198,40 @@ class Program
         return [vogaisNum,consoantesNum,total,numeros];
     }
 
+    static string zenitpolar(string str)
+    {
+        char[] zenit = {'Z', 'E', 'N', 'I', 'T', 'z', 'e', 'n', 'i', 't', 'ê', 'é', 'î', 'í'};
+        char[] polar = {'P', 'O', 'L', 'A', 'R', 'p', 'o', 'l', 'a', 'r', 'õ', 'ó', 'ã', 'á'};
+
+        var map = new Dictionary<char, char>();
+
+        for (int i = 0; i < zenit.Length; i++)
+        {
+            map[zenit[i]] = polar[i];
+        }
+
+        for (int i = 0; i < polar.Length; i++)
+        {
+            map[polar[i]] = zenit[i];
+        }
+
+        string result = "";
+
+        foreach (char c in str)
+        {
+            if (map.ContainsKey(c))
+            {
+                result += map[c];
+            }
+            else
+            {
+                result += c;
+            }
+        }
+
+        return result.ToString();
+    }
+
     static void letreiro(string str)
     {
         string textpad = new string(' ',str.Length*3) + str;
@@ -218,37 +277,39 @@ class Program
         }
     }
 
-    static string zenitpolar(string str)
+    static string formatarNome(string nome)
     {
-        char[] zenit = {'Z', 'E', 'N', 'I', 'T', 'z', 'e', 'n', 'i', 't', 'ê', 'é', 'î', 'í'};
-        char[] polar = {'P', 'O', 'L', 'A', 'R', 'p', 'o', 'l', 'a', 'r', 'õ', 'ó', 'ã', 'á'};
+        string[] palavras = nome.Split(" ");
+        string[] naoNomes = [
+            "do",
+            "da",
+            "de",
+            "dos",
+            "das",
+            "e",
+        ];
+        string resultado = "";
 
-        var map = new Dictionary<char, char>();
-
-        for (int i = 0; i < zenit.Length; i++)
+        foreach (string str in palavras)
         {
-            map[zenit[i]] = polar[i];
-        }
-
-        for (int i = 0; i < polar.Length; i++)
-        {
-            map[polar[i]] = zenit[i];
-        }
-
-        string result = "";
-
-        foreach (char c in str)
-        {
-            if (map.ContainsKey(c))
+            bool isNaoNome = false;
+            
+            foreach (string nn in naoNomes)
             {
-                result += map[c];
+                if (string.Equals(str, nn, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    resultado += str.ToLower() + " ";
+                    isNaoNome = true;
+                    break;
+                }
             }
-            else
+
+            if (!isNaoNome) 
             {
-                result += c;
+                resultado += str[0].ToString().ToUpper() + str.Substring(1).ToLower() + " ";
             }
         }
 
-        return result.ToString();
+        return resultado;
     }
 }
