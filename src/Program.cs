@@ -16,6 +16,7 @@ class Program
             "Letreiro",
             "Desliza Letras",
             "Formata Nomes",
+            "Ordena Palavras",
             "Sair"
         ];
 
@@ -142,7 +143,37 @@ class Program
                     retry = Console.ReadLine();
                     break;
                 }
-                case 6:
+                case 6: {
+                    string? input;
+                    string[]? result;
+                    Console.Clear();
+                    Window.drawBG();
+                    Window.draw(55,10,'s');
+                    Window.writeCenter("ORDENA NOMES", -4);
+                    Window.writeCenter("Esse programa ordena uma lista de palavras",-3);
+                    Window.writeCenter("em ordem alfabética ou desalfabética",-2);
+                    Window.writeCenter("(abc ou zyx).",-1);
+                    Window.writeCenter("Escreva a lista: ",0);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
+                    input = Console.ReadLine();
+                    result = alfabetico(input ?? "ERRO: Referência a null");
+                    Window.clear(55,10);
+                    Window.writeCenter("ORDENA NOMES: RESULTADO",-4);
+                    Window.writeCenter("A nova lista:",-3);
+                    foreach (string str in result)
+                    {
+                        Window.writeCenter(str ?? "ERRO: Referência a null.",-2);
+                    }
+                    Window.writeCenter("Lista original: ",-1);
+                    foreach (string str in input)
+                    {
+                        Window.writeCenter(str ?? "ERRO: Referência a null.",-2);
+                    }
+                    Window.writeCenter("Deseja continuar? [S/n] ",1);
+                    retry = Console.ReadLine();
+                    break;
+                }
+                case 7:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -311,5 +342,35 @@ class Program
         }
 
         return resultado;
+    }
+
+    static string[] alfabetico(string str, bool desalfabetico = false)
+    {
+        bool swapped = false;
+        string aux;
+
+        string[] palavras = str.Split(" ");
+
+        do {
+            for (int i=0; i<palavras.Length; i++)
+            {
+                if (string.Compare(palavras[i],palavras[i+1]) == 1 && !desalfabetico)
+                {
+                    aux = palavras[i];
+                    palavras[i] = palavras[i+1];
+                    palavras[i+1] = aux;
+                    swapped = true;
+                }
+                else if (string.Compare(palavras[i],palavras[i+1]) == -1 && desalfabetico)
+                {
+                    aux = palavras[i];
+                    palavras[i] = palavras[i-1];
+                    palavras[i-1] = aux;
+                    swapped = true;
+                }
+            }
+        } while(swapped);
+
+        return palavras;
     }
 }
