@@ -145,30 +145,23 @@ class Program
                 }
                 case 6: {
                     string? input;
-                    string[]? result;
+                    string? result;
                     Console.Clear();
                     Window.drawBG();
                     Window.draw(55,10,'s');
                     Window.writeCenter("ORDENA NOMES", -4);
                     Window.writeCenter("Esse programa ordena uma lista de palavras",-3);
-                    Window.writeCenter("em ordem alfabética ou desalfabética",-2);
-                    Window.writeCenter("(abc ou zyx).",-1);
-                    Window.writeCenter("Escreva a lista: ",0);
-                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
+                    Window.writeCenter("em ordem alfabética",-2);
+                    Window.writeCenter("Escreva a lista: ",-1);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = alfabetico(input ?? "ERRO: Referência a null");
                     Window.clear(55,10);
                     Window.writeCenter("ORDENA NOMES: RESULTADO",-4);
                     Window.writeCenter("A nova lista:",-3);
-                    foreach (string str in result)
-                    {
-                        Window.writeCenter(str ?? "ERRO: Referência a null.",-2);
-                    }
+                    Window.writeCenter(result ?? "ERRO: Referência a null.",-2);
                     Window.writeCenter("Lista original: ",-1);
-                    foreach (string str in input)
-                    {
-                        Window.writeCenter(str ?? "ERRO: Referência a null.",-2);
-                    }
+                    Window.writeCenter(input ?? "ERRO: Referência a null.",0);
                     Window.writeCenter("Deseja continuar? [S/n] ",1);
                     retry = Console.ReadLine();
                     break;
@@ -344,24 +337,27 @@ class Program
         return resultado;
     }
 
-    static string[] alfabetico(string str, bool desalfabetico = false)
+    static string alfabetico(string str, bool desalfabetico = false)
     {
-        bool swapped = false;
+        bool swapped;
         string aux;
 
         string[] palavras = str.Split(" ");
 
         do {
-            for (int i=0; i<palavras.Length; i++)
+            swapped = false;
+            for (int i=0; i<palavras.Length-1; i++)
             {
-                if (string.Compare(palavras[i],palavras[i+1]) == 1 && !desalfabetico)
+                int comparacao = string.Compare(palavras[i], palavras[i + 1]);
+
+                if (comparacao > 0 && !desalfabetico)
                 {
                     aux = palavras[i];
                     palavras[i] = palavras[i+1];
                     palavras[i+1] = aux;
                     swapped = true;
                 }
-                else if (string.Compare(palavras[i],palavras[i+1]) == -1 && desalfabetico)
+                else if (comparacao < 0 && desalfabetico)
                 {
                     aux = palavras[i];
                     palavras[i] = palavras[i-1];
@@ -371,6 +367,8 @@ class Program
             }
         } while(swapped);
 
-        return palavras;
+        string resultado = string.Join(" ",palavras);
+
+        return resultado;
     }
 }
