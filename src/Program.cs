@@ -17,15 +17,16 @@ class Program
             "Desliza Letras",
             "Formata Nomes",
             "Ordena Palavras",
+            "Sorteia Duplas",
             "Sair"
         ];
 
         do 
         {
             Window.drawBG();
-            Window.draw(35,10,'d');
+            Window.draw(35,12,'d');
             Window.menu(menuOptions);
-            Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+6);
+            Console.SetCursorPosition(Console.WindowWidth/2-19/2,Console.WindowHeight/2+7);
             Console.Write("Escolha uma opção: ");
             optStr = Console.ReadLine();
             option = int.Parse(optStr ?? "1");
@@ -37,7 +38,7 @@ class Program
                     int[] result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("CONTA LETRAS", -4);
                     Window.writeCenter("Esse programa conta quantas letras uma frase ou",-3);
                     Window.writeCenter("palavra tem, assim como quantas vogais e consoantes.",-2);
@@ -45,7 +46,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = contaLetras(input ?? "ERRO: Referência a null.");
-                    Window.clear(55,10);
+                    Window.clear(55,12);
                     Window.writeCenter("CONTA LETRAS: RESULTADO",-4);
                     Window.writeCenter("Foram identificados:",-3);
                     Window.writeCenter(result[0] + " vogais",-2);
@@ -62,7 +63,7 @@ class Program
                     string? input,result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("ZENIT POLAR", -4);
                     Window.writeCenter("Esse programa faz uma encriptação básica em qualquer",-3);
                     Window.writeCenter("frase ou palavra que você digite.",-2);
@@ -70,7 +71,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = zenitpolar(input ?? "ERRO: Referência a null.");
-                    Window.clear(55,10);
+                    Window.clear(55,12);
                     Window.writeCenter("ZENIT POLAR: RESULTADO",-4);
                     Window.writeCenter("Sua nova frase é:",-3);
                     Window.writeCenter(result,-2);
@@ -85,7 +86,7 @@ class Program
                     string? input;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("LETREIRO", -4);
                     Window.writeCenter("Esse programa realiza um efeito no texto",-3);
                     Window.writeCenter("parecido com aqueles paineis led de lojas",-2);
@@ -104,7 +105,7 @@ class Program
                     string? input;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("DESLIZA LETRAS", -4);
                     Window.writeCenter("Esse programa realiza um efeito no texto",-3);
                     Window.writeCenter("onde as letras vem de um lado da tela",-2);
@@ -124,7 +125,7 @@ class Program
                     string result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("FORMATA NOMES", -4);
                     Window.writeCenter("Esse programa formata os nomes corretamente,",-3);
                     Window.writeCenter("deixando as primeiras letras maiúsculas,",-2);
@@ -133,7 +134,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+1);
                     input = Console.ReadLine();
                     result = formatarNome(input ?? "ERRO: Referência a null");
-                    Window.clear(55,10);
+                    Window.clear(55,12);
                     Window.writeCenter("FORMATA NOMES: RESULTADO",-4);
                     Window.writeCenter("O nome formatado fica:",-3);
                     Window.writeCenter(result,-2);
@@ -148,7 +149,7 @@ class Program
                     string? result;
                     Console.Clear();
                     Window.drawBG();
-                    Window.draw(55,10,'s');
+                    Window.draw(55,12,'s');
                     Window.writeCenter("ORDENA NOMES", -4);
                     Window.writeCenter("Esse programa ordena uma lista de palavras",-3);
                     Window.writeCenter("em ordem alfabética",-2);
@@ -156,7 +157,7 @@ class Program
                     Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                     input = Console.ReadLine();
                     result = alfabetico(input ?? "ERRO: Referência a null");
-                    Window.clear(55,10);
+                    Window.clear(55,12);
                     Window.writeCenter("ORDENA NOMES: RESULTADO",-4);
                     Window.writeCenter("A nova lista:",-3);
                     Window.writeCenter(result ?? "ERRO: Referência a null.",-2);
@@ -166,7 +167,34 @@ class Program
                     retry = Console.ReadLine();
                     break;
                 }
-                case 7:
+                case 7: {
+                    string? input;
+                    string? result = "";
+                    Console.Clear();
+                    Window.drawBG();
+                    Window.draw(65,12,'s');
+                    Window.writeCenter("SORTEIA DUPLAS", -4);
+                    Window.writeCenter("Esse programa recebe uma lista de palavras",-3);
+                    Window.writeCenter("de número par e sorteia ela em duplas.",-2);
+                    Window.writeCenter("Escreva a lista: ",-1);
+                    Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
+                    input = Console.ReadLine();
+                    string[,] temp = randPairs(input ?? "ERRO: Referência a null");
+                    for (int i = 0; i < temp.GetLength(0); i++)
+                    {
+                        result += $" ({temp[i, 0]}, {temp[i, 1]})";
+                    }
+                    Window.clear(65,12);
+                    Window.writeCenter("SORTEIA DUPLAS: RESULTADO",-4);
+                    Window.writeCenter("A nova lista:",-3);
+                    Window.writeCenter(result,-2);
+                    Window.writeCenter("Lista original: ",-1);
+                    Window.writeCenter(input ?? "ERRO: Referência a null.",0);
+                    Window.writeCenter("Deseja continuar? [S/n] ",1);
+                    retry = Console.ReadLine();
+                    break;
+                }
+                case 8:
                     Console.ResetColor();
                     Console.Clear();
                     Environment.Exit(0);
@@ -370,5 +398,47 @@ class Program
         string resultado = string.Join(" ",palavras);
 
         return resultado;
+    }
+
+    static string[,] randPairs(string str)
+    {
+        string[] arr = str.Split(" ");
+        Random rng = new();
+
+        string[,] result;
+        
+        if (isEven(arr.Length))
+        {
+            //Algoritmo bubble sort que embaralha a array, assim conseguindo pares aleatórios.
+            for (int i=arr.Length-1; i>0; i--)
+            {
+                int rand = rng.Next(0,i+1);
+                string aux = arr[i];
+                arr[i] = arr[rand];
+                arr[rand] = aux;
+            }
+
+            int numPairs = arr.Length/2;
+            result = new string[numPairs,2];
+
+            int index = 0;
+            for (int i = 0; i < numPairs; i++)
+            {
+                result[i, 0] = arr[index];
+                result[i, 1] = arr[index + 1];
+                index += 2;
+            }
+
+            return result;
+        }
+        else
+        {
+            throw new ArgumentException("ERRO: Não é possível fazer pares com uma lista ímpar.");
+        }
+    }
+
+    static bool isEven(int num)
+    {
+        return num % 2 == 0;
     }
 }
