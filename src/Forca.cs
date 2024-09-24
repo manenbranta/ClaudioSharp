@@ -37,7 +37,7 @@ namespace Claudio
             Console.WriteLine("\nEscreva uma letra: ");
             char letra = Console.ReadLine().ToCharArray()[0];
 
-            if (palavra.Contains(letra)) 
+            if (palavra.Contains(letra.ToString())) 
             {
                 Console.WriteLine(string.Join(" ", new string('_', palavra.Length).ToCharArray()));
             }

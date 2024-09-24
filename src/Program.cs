@@ -1,14 +1,15 @@
 ﻿namespace Claudio
 {
     using System;
+    using System.Collections.Generic;
 
     class Program
     {
         static void Main()
         {
-            string? optStr;
+            string optStr;
             int option; 
-            string? retry = "";
+            string retry = "";
 
             string[] menuOptions = {
                 "Conta Letras",
@@ -23,6 +24,7 @@
 
             do 
             {
+                Console.Clear();
                 Window.drawBG();
                 Window.draw(35,12,'d');
                 Window.menu(menuOptions);
@@ -34,7 +36,7 @@
                 {
                     case 1: 
                     {
-                        string? input;
+                        string input;
                         int[] result;
                         Console.Clear();
                         Window.drawBG();
@@ -60,7 +62,7 @@
                     }
                     case 2:
                     {
-                        string? input,result;
+                        string input,result;
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(55,12,'s');
@@ -83,7 +85,7 @@
                     }
                     case 3: 
                     {
-                        string? input;
+                        string input;
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(55,12,'s');
@@ -102,7 +104,7 @@
                         break;
                     }
                     case 4: {
-                        string? input;
+                        string input;
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(55,12,'s');
@@ -121,7 +123,7 @@
                         break;
                     }
                     case 5: {
-                        string? input;
+                        string input;
                         string result;
                         Console.Clear();
                         Window.drawBG();
@@ -145,8 +147,8 @@
                         break;
                     }
                     case 6: {
-                        string? input;
-                        string? result;
+                        string input;
+                        string result;
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(55,12,'s');
@@ -168,8 +170,8 @@
                         break;
                     }
                     case 7: {
-                        string? input;
-                        string? result = "";
+                        string input;
+                        string result = "";
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(65,12,'s');
@@ -247,7 +249,7 @@
                 }
             }
             total = vogaisNum+consoantesNum;
-            return [vogaisNum,consoantesNum,total,numeros];
+            return new int[] {vogaisNum,consoantesNum,total,numeros};
         }
 
         static string zenitpolar(string str)
@@ -304,34 +306,35 @@
                     textpad = textpad.Substring(1) + textpad.Substring(0, 1);
                     Window.draw(width,5,'s');
                     Window.writeCenter("Pressione ESPAÇO para continuar.", 3);
-                    Thread.Sleep(delay);
+                    System.Threading.Thread.Sleep(delay);
                 }
             } while(Console.KeyAvailable == false);
         }
 
         static void deslizaLetras(string str, int delay=100)
         {
-            string textpad = new string(' ',str.Length*3) + str;
-            int width = str.Length + str.Length*3;
+                int width = str.Length + str.Length*3;
 
-            Window.draw(width,5,'s');
-            for (int i=0; i < width; i++)
-            {
-                for (int j=0; j <= width-str.Length; j++)
+                string curChar;
+
+                Window.draw(width,5,'s');
+                for (int i=0; i < width; i++)
                 {
-                    Window.clear(width,5);
-                    Console.SetCursorPosition(Console.WindowWidth/2-width/2,Console.WindowHeight/2);
-                    string line = new string(' ', width-str.Length-j);
-                    line += textpad.Substring(0, i) + textpad[i] + new string(' ', j);
-                    Console.Write(line);
-                    Thread.Sleep(delay);
+                    Console.SetCursorPosition(Console.WindowWidth/2+width/2,Console.WindowHeight/2);
+                    curChar = str.Substring(i, 1);
+                    for (int j=75; j > width-str.Length + 3; j--)
+                    {
+                        Window.clear(width,5);
+                        Console.SetCursorPosition(Console.WindowWidth/2-j/2,Console.WindowHeight/2);
+                        Console.Write(curChar + " ");
+                        System.Threading.Thread.Sleep(delay);
+                    }
                 }
-            }
         }
 
         static string formatarNome(string nome)
         {
-            string[] palavras = nome.Split(" ");
+            string[] palavras = nome.Split(' ');
             string[] naoNomes = {
                 "do",
                 "da",
@@ -370,7 +373,7 @@
             bool swapped;
             string aux;
 
-            string[] palavras = str.Split(" ");
+            string[] palavras = str.Split(' ');
 
             do {
                 swapped = false;
@@ -402,7 +405,7 @@
 
         static string[,] randPairs(string str)
         {
-            string[] arr = str.Split(" ");
+            string[] arr = str.Split(' ');
             Random rng = new Random();
 
             string[,] result;

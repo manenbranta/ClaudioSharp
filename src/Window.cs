@@ -1,6 +1,8 @@
 namespace Claudio
 {
+    using System;
     using static System.Console;
+
     class Window
     {
         public static void writeCenter(string str, int yAdd)
