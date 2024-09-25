@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     class Program
     {
@@ -147,18 +148,23 @@
                         break;
                     }
                     case 6: {
-                        string input;
+                        bool desalfabetico;
+                        string input,ordemStr;
                         string result;
                         Console.Clear();
                         Window.drawBG();
                         Window.draw(55,12,'s');
                         Window.writeCenter("ORDENA NOMES", -4);
                         Window.writeCenter("Esse programa ordena uma lista de palavras",-3);
-                        Window.writeCenter("em ordem alfabética",-2);
+                        Window.writeCenter("em ordem alfabética ou \"desalfabética\" (abc e zyx)",-2);
                         Window.writeCenter("Escreva a lista: ",-1);
                         Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2);
                         input = Console.ReadLine();
-                        result = alfabetico(input ?? "ERRO: Referência a null");
+                        Window.writeCenter("Escreva a ordem: ([A]lfabética [D]esalfabética) ",1);
+                        Console.SetCursorPosition(Console.WindowWidth/2-55/2+1,Console.WindowHeight/2+2);
+                        ordemStr = Console.ReadLine();
+                        desalfabetico = string.Equals(ordemStr.Trim(' '),"D",StringComparison.CurrentCultureIgnoreCase) ? true : false;
+                        result = alfabetico(input ?? "ERRO: Referência a null", desalfabetico);
                         Window.clear(55,12);
                         Window.writeCenter("ORDENA NOMES: RESULTADO",-4);
                         Window.writeCenter("A nova lista:",-3);
@@ -379,23 +385,21 @@
                 {
                     int comparacao = string.Compare(palavras[i], palavras[i + 1]);
 
-                    if (comparacao > 0 && !desalfabetico)
+                    if (comparacao > 0)
                     {
                         aux = palavras[i];
                         palavras[i] = palavras[i+1];
                         palavras[i+1] = aux;
                         swapped = true;
                     }
-                    else if (comparacao < 0 && desalfabetico)
-                    {
-                        aux = palavras[i];
-                        palavras[i] = palavras[i-1];
-                        palavras[i-1] = aux;
-                        swapped = true;
-                    }
                 }
             } while(swapped);
 
+            if (desalfabetico) 
+            {
+                Array.Reverse(palavras);
+            }
+            
             string resultado = string.Join(" ",palavras);
 
             return resultado;
