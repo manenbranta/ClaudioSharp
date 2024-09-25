@@ -311,25 +311,23 @@
             } while(Console.KeyAvailable == false);
         }
 
-        static void deslizaLetras(string str, int delay=100)
+        static void deslizaLetras(string str, int delay=25)
         {
-                int width = str.Length + str.Length*3;
+            string curChar;
 
-                string curChar;
-
-                Window.draw(width,5,'s');
-                for (int i=0; i < width; i++)
+            Window.draw(str.Length*2,5,'s');
+            for (int i=0; i<str.Length; i++)
+            {
+                Console.SetCursorPosition(Console.WindowWidth/2-str.Length, Console.WindowHeight/2);
+                curChar = str.Substring(i, 1);
+                for (int j=Console.WindowWidth/2+str.Length; j>i+Console.WindowWidth/2-str.Length/2; j--)
                 {
-                    Console.SetCursorPosition(Console.WindowWidth/2+width/2,Console.WindowHeight/2);
-                    curChar = str.Substring(i, 1);
-                    for (int j=75; j > width-str.Length + 3; j--)
-                    {
-                        Window.clear(width,5);
-                        Console.SetCursorPosition(Console.WindowWidth/2-j/2,Console.WindowHeight/2);
-                        Console.Write(curChar + " ");
-                        System.Threading.Thread.Sleep(delay);
-                    }
+                    Console.SetCursorPosition(j - 2, Console.WindowHeight/2); 
+                    Console.Write(curChar + " ");
+                    System.Threading.Thread.Sleep(delay);
                 }
+
+            }
         }
 
         static string formatarNome(string nome)

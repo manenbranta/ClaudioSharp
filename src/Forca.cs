@@ -1,5 +1,3 @@
-
-
 namespace Claudio
 {
     using System;
@@ -47,7 +45,5 @@ namespace Claudio
         {
             return str[0].ToString().ToUpper() + str.Substring(1).ToLower();
         }
-
-
     }
 }
