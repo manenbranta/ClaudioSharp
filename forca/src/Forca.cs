@@ -3,24 +3,26 @@ namespace Claudio
     using System;
     using System.Globalization;
     using System.Collections.Generic;
+    using System.Linq;
 
     class Forca
     {
         static void Main()
         {
             string[] listaPalavras = {
-                //"amarelo",
-                "miserável"//,
-                /*"caatinga",
+                "amarelo",
+                "miserável",
+                "caatinga",
                 "transeunte",
                 "quarentena",
-                "pokemon"*/
+                "pokemon"
             };
 
             Random rng = new Random();
 
             // Palavra escolhida pro jogo de forca
             string palavra;
+            List<char> letrasRepetidas = new List<char>();
 
             int erros = 0;
 
@@ -47,9 +49,14 @@ namespace Claudio
                 {
                     Console.WriteLine(dicas[palavra]);
                 }
+                else if (letrasRepetidas.Contains(letra))
+                {
+                    Console.WriteLine("Você já escolheu essa letra!");
+                }
                 else if (palavra.Contains(letra.ToString()))
                 {
                     char[] cesarArray = cesar.ToCharArray();
+                    letrasRepetidas.Add(letra);
 
                     for (int i=0; i<palavra.Length; i++) 
                     {
