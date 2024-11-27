@@ -1,14 +1,16 @@
 using System;
+using System.IO;
+using System.Xml;
 using System.Net.Mail;
 using System.Globalization;
-using System.Collections.Generic;
+using System.Xml.Serialization;
 using System.Text.RegularExpressions;
 
 namespace arquivos;
 
 class Program
 {
-    static List<DadosUsuario> registros = new List<DadosUsuario>();
+    static Dados registros;
     static void Main()
     {
         string[] menuOptions = {
@@ -18,8 +20,22 @@ class Program
         };
 
         string optStr;
+        string path = "./res/dados.xml";
         int opt;
         bool repetir;
+
+        registros.usuarios = Array.Empty<Usuario>();
+
+        XmlSerializer x = new XmlSerializer(typeof(Dados));
+
+        if (File.Exists(path) && !(new FileInfo(path).Length == 0))
+        {
+            using (StreamReader reader = new StreamReader(path))
+            {
+                registros = (Dados)x.Deserialize(reader);
+            }
+        }
+        
 
         do 
         {
@@ -35,7 +51,10 @@ class Program
                 case 1:
                     do
                     {
-                        registros.Add(registro());
+                        var reg = registro();
+                        AddUsuario(reg);
+                        x.Serialize(Console.Out,registros);
+                        Console.WriteLine();
                         Console.Write("Deseja adicionar mais um registro? [S/n] ");
                         string temp = Console.ReadLine().Trim(' ');
                         repetir = 
@@ -45,7 +64,7 @@ class Program
                     Console.Clear();
                     break;
                 case 2:
-                    foreach (var usr in registros)
+                    foreach (var usr in registros.usuarios)
                     {
                         Console.WriteLine(usr.ToString());
                     }
@@ -56,6 +75,7 @@ class Program
                 case 3:
                     Console.ResetColor();
                     Console.Clear();
+                    SaveReg(path, x);
                     Environment.Exit(0);
                     break;
                 default:
@@ -65,13 +85,29 @@ class Program
                     Console.ReadLine();
                     Console.ResetColor();
                     Console.Clear();
+                    SaveReg(path, x);
                     Environment.Exit(1);
                     break;
             }
         } while(true);
     }
 
-    public static DadosUsuario registro()
+    static void AddUsuario(Usuario usr)
+    {
+        int len = registros.usuarios.Length;
+        Array.Resize(ref registros.usuarios, len+1);
+        registros.usuarios[len] = usr;
+    }
+
+    static void SaveReg(string path, XmlSerializer ser)
+    {
+        using (StreamWriter writer = new StreamWriter(path))
+        {
+            ser.Serialize(writer, registros);
+        }
+    }
+
+    public static Usuario registro()
     {
         Console.Clear();
         Console.Write("Digite o nome: ");
@@ -94,7 +130,7 @@ class Program
             }
         } while(emailError);
 
-        return new DadosUsuario(nome, data, tel, email);
+        return new Usuario(nome, data, tel, email);
     }
 
     public static void menu(string[] options)
@@ -106,14 +142,28 @@ class Program
     }
 }
 
-struct DadosUsuario
+[Serializable()]
+[XmlRoot("Dados")]
+public struct Dados
 {
-    string nome { get; set; }
-    DateTime nascimento { get; set; }
-    string telefone { get; set; }
-    string email { get; set; }
+    [XmlArray("Usuarios")]
+    [XmlArrayItem("Usuario", typeof(Usuario))]
+    public Usuario[] usuarios;
+}
 
-    public DadosUsuario(string nome, DateTime nascimento, string telefone, string email)
+[Serializable()]
+public struct Usuario
+{
+    [XmlElement("Nome")]
+    public string nome { get; set; }
+    [XmlElement("DataDeNascimento")]
+    public DateTime nascimento { get; set; }
+    [XmlElement("Telefone")]
+    public string telefone { get; set; }
+    [XmlElement("Email")]
+    public string email { get; set; }
+
+    public Usuario(string nome, DateTime nascimento, string telefone, string email)
     {
         this.nome = nome;
         this.nascimento = nascimento;
@@ -172,7 +222,7 @@ struct DadosUsuario
         string resultado = Regex.Replace(tel, @"\D", "");
 
         if (resultado.Length > 2) resultado = $"({resultado.Substring(0,2)}) {resultado.Substring(2)}";
-        if (resultado.Length > 9) resultado = $"{resultado.Substring(0,9)}-{resultado.Substring(9)}";
+        if (resultado.Length > 10) resultado = $"{resultado.Substring(0,10)}-{resultado.Substring(10)}";
 
         return resultado;
     }
