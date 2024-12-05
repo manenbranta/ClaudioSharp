@@ -5,6 +5,7 @@ using System.Net.Mail;
 using System.Globalization;
 using System.Xml.Serialization;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace arquivos;
 
@@ -21,12 +22,18 @@ class Program
 
         string optStr;
         string path = "./res/dados.xml";
+        string pathtxt = "./res/dados.txt";
         int opt;
         bool repetir;
 
         registros.usuarios = Array.Empty<Usuario>();
 
         XmlSerializer x = new XmlSerializer(typeof(Dados));
+
+        if (!Directory.Exists("./res"))
+        {
+            Directory.CreateDirectory("res");
+        }
 
         if (File.Exists(path) && !(new FileInfo(path).Length == 0))
         {
@@ -35,7 +42,22 @@ class Program
                 registros = (Dados)x.Deserialize(reader);
             }
         }
-        
+
+        // Dados placeholder em txt para teste da serialização em plain text.
+        string serializedData = 
+        @"-----USUARIO-----
+        John Doe
+        25/12/1990
+        (12) 34567-8901
+        john.doe@example.com
+        -----USUARIO-----
+        Jane Smith
+        10/01/1985
+        (34) 98765-4321
+        jane.smith@example.com";
+
+        Dados dados = new Dados();
+        dados = dados.DeserializeTxt(serializedData);
 
         do 
         {
@@ -68,6 +90,10 @@ class Program
                     {
                         Console.WriteLine(usr.ToString());
                     }
+                    foreach (var usuario in dados.usuarios)
+                    {
+                        Console.WriteLine(usuario.ToString());
+                    }
                     Console.WriteLine("Pressione ENTER para continuar");
                     Console.ReadLine();
                     Console.Clear();
@@ -75,7 +101,7 @@ class Program
                 case 3:
                     Console.ResetColor();
                     Console.Clear();
-                    SaveReg(path, x);
+                    SaveReg(path, pathtxt, x);
                     Environment.Exit(0);
                     break;
                 default:
@@ -85,7 +111,7 @@ class Program
                     Console.ReadLine();
                     Console.ResetColor();
                     Console.Clear();
-                    SaveReg(path, x);
+                    SaveReg(path, pathtxt, x);
                     Environment.Exit(1);
                     break;
             }
@@ -99,11 +125,17 @@ class Program
         registros.usuarios[len] = usr;
     }
 
-    static void SaveReg(string path, XmlSerializer ser)
+    static void SaveReg(string pathXml, string pathTxt, XmlSerializer ser)
     {
-        using (StreamWriter writer = new StreamWriter(path))
+        StreamWriter writer;
+        using (writer = new StreamWriter(pathXml))
         {
             ser.Serialize(writer, registros);
+        }
+
+        using (writer = new StreamWriter(pathTxt))
+        {
+            writer.Write(registros.SerializeTxt());
         }
     }
 
@@ -149,6 +181,50 @@ public struct Dados
     [XmlArray("Usuarios")]
     [XmlArrayItem("Usuario", typeof(Usuario))]
     public Usuario[] usuarios;
+
+    public string SerializeTxt()
+    {
+        string result = "";
+        foreach (Usuario usr in usuarios)
+        {
+            result += "-----USUARIO-----\n";
+            result += usr.SerializeTxt();
+        }
+
+        return result;
+    }
+
+    public Dados DeserializeTxt(string file)
+    {
+        file.Replace("\r\n", "\n");
+        string[] parts = file.Split("-----USUARIO-----", StringSplitOptions.RemoveEmptyEntries);
+        List<Usuario> usuarios = new List<Usuario>();
+
+        foreach (var part in parts)
+        {
+            string[] fields = part.TrimEnd().TrimStart().Split('\n', StringSplitOptions.RemoveEmptyEntries);
+
+            if (fields.Length == 4)
+            {
+                for (int i=0; i<fields.Length; i++)
+                    fields[i] = fields[i].TrimStart().TrimEnd();
+
+                Usuario usr = new Usuario(
+                    fields[0], 
+                    DateTime.Parse(fields[1]), 
+                    fields[2], 
+                    fields[3]
+                );
+                usuarios.Add(usr);
+            }
+            else
+            {
+                Console.WriteLine("Invalid structure! Skipping entry.");
+            }
+        }
+
+        return new Dados {usuarios = usuarios.ToArray()};
+    }
 }
 
 [Serializable()]
@@ -171,6 +247,18 @@ public struct Usuario
         this.email = email;
 
         Format();
+    }
+
+    public string SerializeTxt()
+    {
+        return $"{nome}\n{nascimento}\n{telefone}\n{email}\n";
+    }
+
+    public Usuario DeserializeTxt(string txt)
+    {
+        string[] dados = txt.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        
+        return new Usuario(dados[1], DateTime.Parse(dados[2]), dados[3], dados[4]);
     }
 
     public void Format()
