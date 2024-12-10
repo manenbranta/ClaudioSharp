@@ -86,10 +86,8 @@ class Program
                     Console.Clear();
                     break;
                 case 2:
-                    foreach (var usr in registros.usuarios)
-                    {
-                        Console.WriteLine(usr.ToString());
-                    }
+                    PrintTable(registros.usuarios);
+                    Console.WriteLine("\nDados teste para parsing txt: ");
                     foreach (var usuario in dados.usuarios)
                     {
                         Console.WriteLine(usuario.ToString());
@@ -163,6 +161,31 @@ class Program
         } while(emailError);
 
         return new Usuario(nome, data, tel, email);
+    }
+
+    static void PrintTable(Usuario[] usrs)
+    {
+        PrintRow(new string[] {"Nome", "Data de Nascimento", "Telefone", "E-mail"});
+        foreach (var usr in registros.usuarios)
+        {
+            string[] dados = {
+                usr.nome,
+                $"{usr.nascimento:dd/MM/yyyy}",
+                usr.telefone,
+                usr.email
+            };
+
+            PrintRow(dados);
+        }
+    }
+
+    static void PrintRow(string[] items)
+    {
+        foreach (string str in items)
+        {
+            Console.Write($"{str,-25}");
+        }
+        Console.WriteLine();
     }
 
     public static void menu(string[] options)
